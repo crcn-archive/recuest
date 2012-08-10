@@ -1,4 +1,4 @@
-Rec-uest is a server & command line tool which proxies API's and allows you to record, and replay API responses.
+Rec-uest helps you better debug API's by allowing you to record, and twiddle http requests on the fly.
 
 ### Purpose
 
@@ -6,7 +6,7 @@ Rec-uest is a server & command line tool which proxies API's and allows you to r
 - Automated testing made easier
 - Easier to debug any outlying issues with API responses
 - Simulate server states 
-	- 
+	- server outages
 
 ### Requirements
 
