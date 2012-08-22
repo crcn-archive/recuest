@@ -2,8 +2,9 @@
 
 var recuest = require("../")
 cli        = require("optimist").
-usage("Usage: --env=[env]").
-default("env", "default"),
+usage("Usage: --env=[env] --path=[configPath]").
+default("env", "default").
+default("path",  "/usr/local/etc/recuest/config"),
 argv = cli.argv,
 vm = require("vm");
 
@@ -13,17 +14,10 @@ if(argv.help) {
 	process.exit();
 }
 
-var config = require("./config"),
-configEnv = config[argv.env];
-
-if(!configEnv) {
-	console.error("env \"%s\" does not exist", argv.env);
-	process.exit();
-}
-
-
-var rc = recuest(configEnv).start();
-
+var rc = recuest(require("./config")({
+	env: argv.env.split(","),
+	path: argv.path
+})).start();
 
 
 process.openStdin().on("data", function(chunk) {
