@@ -2,8 +2,8 @@
 
 var recuest = require("../")
 cli        = require("optimist").
-usage("Usage: --port=[num]").
-default("port", 8080),
+usage("Usage: --env=[env]").
+default("env", "default"),
 argv = cli.argv,
 vm = require("vm");
 
@@ -13,16 +13,16 @@ if(argv.help) {
 	process.exit();
 }
 
+var config = require("./config"),
+configEnv = config[argv.env];
 
-var rc = recuest({
-	port: argv.port,
-	db: {
-		driver: "Mongo",
-		port: 27017,
-		host: "127.0.0.1",
-		database: "recuest"
-	}
-}).start();
+if(!configEnv) {
+	console.error("env \"%s\" does not exist", argv.env);
+	process.exit();
+}
+
+
+var rc = recuest(configEnv).start();
 
 
 
@@ -30,7 +30,7 @@ process.openStdin().on("data", function(chunk) {
 
 	var db = rc.db,
 	twiddler = rc.proxy.twiddler;
-	
+
 	try {
 		eval(String(chunk));
 	} catch(e) {
