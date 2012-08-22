@@ -2,11 +2,12 @@
 
 var recuest = require("../")
 cli        = require("optimist").
-usage("Usage: --env=[env] --path=[configPath]").
-default("env", "default").
-default("path",  "/usr/local/etc/recuest/config"),
+usage("Usage: --env=[env] [config paths]").
+default("env", "default"),
 argv = cli.argv,
 vm = require("vm");
+
+argv._.unshift("/usr/local/etc/recuest/config");
 
 
 if(argv.help) {
@@ -16,7 +17,7 @@ if(argv.help) {
 
 var rc = recuest(require("./config")({
 	env: argv.env.split(","),
-	path: argv.path
+	paths: argv._
 })).start();
 
 

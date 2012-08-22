@@ -14,34 +14,77 @@ Rec-uest helps you better debug API's by allowing you to record, and twiddle htt
 
 ### Installation
 
-
-First install via NPM:
-
 ```
-npm intall recuest`
+npm install recuest -g
 ```
 
-Next, add your first API proxy:
+### Terminal Usage
 
 ```
-recuest add --name=youtube --endpoint=https://gdata.youtube.com
+Usage: --env=[env] [config paths]
+
+Options:
+  --env  [default: "default"]
 ```
 
-Then start recuest:
+### Example:
+
+Here's an example where the proxy might simulate a 500 internal server error:
 
 ```
-recuest start --port=8080
+recuest --env=default,500 /path/to/config.json
 ```
 
-Finally, go to your browser and type in:
+And here's `/path/to/config.json`:
 
-```
-http://localhost:8080/youtube
+```javascript
+{
+    "default": {
+        "port": 8080,
+        "profile": "default",
+        "db": {
+            "driver": "Mongo",
+            "port": 27017,
+            "host": "127.0.0.1",
+            "database": "recuest"
+        }
+    },
+    "500": {
+    	"profile": "500",
+    	"twiddle": {
+    		"response": [
+    			{
+    				"fiddle": {
+    					"$set": {
+    						"statusCode": 500,
+    						"body": "A 500 internal server error has occurred."
+    					}
+    				}	
+    			}	
+    		]
+    	}
+    }
+}
+    
+}
 ```
 
-That's it! Now you can access the youtube API via that endpoint. Here's an example:
+In your node.js app, make sure to use this chunk of code:
 
+```javascript
+
+//monkey-patches the http module so all requests redirect through the proxy
+require("recuest").injectProxy({
+	host: "http://localhost:8080"
+});
+
+var request = require("request");
+
+//redirects through the proxy
+request.get("http://google.com", function(err, response, body) {
+	console.log(body);
+});
 ```
-http://localhost:8080/youtube/feeds/api/users/default/subscriptions?v=2&alt=json
-```
+
+Finally, call `node ./my/app.js`, and you should see `A 500 internal server error has occurred`.
 
