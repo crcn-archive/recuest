@@ -2,7 +2,7 @@
   "author": "Craig Condon <craig.j.condon@gmail.com>",
   "name": "recuest",
   "description": "API testing proxy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/crcn/recuest.git"
@@ -11,6 +11,22 @@
   "bin": {
     "recuest": "./bin/cli.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "crc32": "0.2.x",
+    "request": "2.9.x",
+    "sprintf": "0.1.x",
+    "underscore": "1.2.x",
+    "structr": "0.2.x",
+    "step": "0.0.x",
+    "express": "*",
+    "optimist": "0.3.x",
+    "connect": "1.8.x",
+    "outcome": "0.0.x",
+    "fiddle": "0.0.x",
+    "winston": "0.5.x",
+    "mongodblite": "0.0.x",
+    "sift": "0.0.x",
+    "celeri": "0.2.x"
+  },
   "devDependencies": {}
 }

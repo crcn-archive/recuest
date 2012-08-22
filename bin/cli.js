@@ -28,9 +28,12 @@ var rc = recuest({
 
 process.openStdin().on("data", function(chunk) {
 
-	var db = rc.db;
-	/*vm.runInContext(String(chunk), vm.createContext({
-		db: rc.db
-	}));*/
-	eval(String(chunk));
+	var db = rc.db,
+	twiddler = rc.proxy.twiddler;
+	
+	try {
+		eval(String(chunk));
+	} catch(e) {
+		console.error(e.message);
+	}
 })
